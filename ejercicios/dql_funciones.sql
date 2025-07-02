@@ -109,3 +109,30 @@ DELIMITER ;
 SELECT fn_municipio_por_nombre_cliente('Valentina Mendoza');
 
 
+-- Crea una función llamada `fn_departamento_por_municipio(municipio_id INT)` que retorne el nombre del departamento asociado.
+
+DELIMITER //
+
+DROP FUNCTION IF EXISTS fn_departamento_por_municipio;
+CREATE FUNCTION fn_departamento_por_municipio(municipio_id INT)
+RETURNS VARCHAR(80)
+DETERMINISTIC
+BEGIN
+    DECLARE _dep_id INT;
+    DECLARE _nombre VARCHAR(80);
+
+    SELECT depid INTO _dep_id
+    FROM municipio
+    WHERE id = municipio_id;
+
+    SELECT nombre INTO _nombre
+    FROM departamento 
+    WHERE id = _dep_id;
+
+    RETURN _nombre;
+
+END //
+DELIMITER ;
+
+SELECT fn_departamento_por_municipio(1);
+
