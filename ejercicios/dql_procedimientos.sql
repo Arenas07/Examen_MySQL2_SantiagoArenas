@@ -12,8 +12,31 @@ CREATE PROCEDURE ps_registrar_cliente_unico(
     IN p_fecha_registro DATE, 
     IN p_municipio INT)
 BEGIN
-    INSERT INTO clientes (nombre, email, telefono, direccion, fecha_registro, municipioid) VALUES
-    (p_nombre, p_correo, p_telefono, p_direccion, p_fecha_registro, p_municipio);
+
+    DECLARE done INT DEFAULT 0;
+    DECLARE _correos VARCHAR(50);
+
+    DECLARE cur CURSOR FOR
+        SELECT email FROM clientes;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+    OPEN cur;
+        loopcorreos: LOOP
+
+        FETCH cur INTO _correos;
+
+    
+        IF (p_correo = _correos) THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Correo duplicado, no se pudo realizar la accion';
+        ELSE
+            INSERT INTO clientes (nombre, email, telefono, direccion, fecha_registro, municipioid) VALUES
+            (p_nombre, p_correo, p_telefono, p_direccion, p_fecha_registro, p_municipio);
+        END IF;
+
+    END LOOP loopcorreos;
+
+    CLOSE cur;
 END //
 
 DELIMITER ;
@@ -28,3 +51,7 @@ CALL ps_registrar_cliente_unico(
 );
 
 SELECT * FROM clientes WHERE cliente_id = LAST_INSERT_ID();
+
+
+
+-- 
