@@ -48,4 +48,26 @@ END //
 
 DELIMITER ;
 
--- 
+-- Define un trigger llamado `trg_bloquear_duplicado_email` que antes de insertar en clientes, bloquea si el email ya existe hacendo uso de `SIGNAL`.
+
+
+DELIMITER //
+
+DROP TRIGGER IF EXISTS trg_bloquear_duplicado_email;
+CREATE TRIGGER trg_bloquear_duplicado_email
+BEFORE INSERT ON clientes
+FOR EACH ROW
+BEGIN 
+    DECLARE _email VARCHAR(80);
+    
+    SELECT email INTO _email
+    FROM clientes
+    WHERE cliente_id = NEW.cliente_id;
+
+    IF _email = NEW.email THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Correo en uso';
+    END IF;
+END //
+
+DELIMITER ;
