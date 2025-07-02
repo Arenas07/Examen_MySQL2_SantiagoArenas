@@ -74,3 +74,22 @@ DELIMITER ;
 
 CALL ps_listar_empleados_por_sucursal('Sucursal Zona 3');
 
+
+-- Cree un procedimiento por nombre  `ps_buscar_cliente_por_email` donde retorne los datos completos de un cliente dado su email.
+
+DELIMITER //
+
+DROP PROCEDURE IF EXISTS ps_buscar_cliente_por_email;
+CREATE PROCEDURE ps_buscar_cliente_por_email(
+    IN p_correo VARCHAR(50)
+)
+BEGIN 
+    SELECT *
+    FROM clientes
+    WHERE email = p_correo;
+
+END //
+
+DELIMITER ;
+
+CALL ps_buscar_cliente_por_email('adrian.ruiz@gmail.com');
