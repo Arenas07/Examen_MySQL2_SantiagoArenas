@@ -23,3 +23,33 @@ END //
 DELIMITER ;
 
 SELECT fn_total_clientes_municipio(1) AS TOTAL;
+
+
+
+-- Crea una función llamada `fn_nombre_municipio(cliente_id INT)` que retorne el nombre del municipio de residencia del cliente.
+
+DELIMITER // 
+
+DROP FUNCTION IF EXISTS fn_nombre_municipio;
+CREATE FUNCTION fn_nombre_municipio(p_cliente_id INT)
+RETURNS VARCHAR(80)
+DETERMINISTIC
+BEGIN 
+    DECLARE _municipio_id INT;
+    DECLARE _mun_nombre VARCHAR(80);
+
+    SELECT municipioid INTO _municipio_id
+    FROM clientes
+    WHERE cliente_id = p_cliente_id;
+
+    SELECT nombre INTO _mun_nombre
+    FROM municipio 
+    WHERE id = _municipio_id;
+
+    RETURN _mun_nombre;
+
+END //
+
+DELIMITER ;
+
+SELECT fn_nombre_municipio(1);
