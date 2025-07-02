@@ -31,4 +31,13 @@ INNER JOIN empleados e ON e.sucursalid = suc.id
 SELECT DISTINCT(suc.id), e.nombre, e.puesto
 FROM sucursal suc
 INNER JOIN empleados e ON e.sucursalid = suc.id
-ORDER BY e.puesto DESC
+ORDER BY e.puesto DESC;
+
+-- Mostrar el total de empleados por municipio y el nombre del departamento al que pertenecen.
+
+SELECT dep.nombre, mun.nombre, COUNT(e.empleado_id) AS total_empleados
+FROM empleados e
+INNER JOIN sucursal suc ON suc.id = e.sucursalid
+INNER JOIN municipio mun ON mun.id = suc.municipioid
+INNER JOIN departamento dep ON dep.id = mun.depid
+GROUP BY dep.nombre, mun.nombre;
