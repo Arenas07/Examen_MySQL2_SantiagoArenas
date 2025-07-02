@@ -77,3 +77,35 @@ DELIMITER ;
 
 SELECT fn_salario_promedio_sucursal(1);
 
+
+-- Crea una función llamada `fn_municipio_por_nombre_cliente(nombre_cliente VARCHAR)` que retorne el nombre del municipio del cliente según su nombre (puede haber duplicados).
+
+DELIMITER //
+
+DROP FUNCTION IF EXISTS fn_municipio_por_nombre_cliente;
+CREATE FUNCTION fn_municipio_por_nombre_cliente(nombre_cliente VARCHAR(80))
+RETURNS VARCHAR(80)
+DETERMINISTIC
+BEGIN 
+    DECLARE _municipio_id INT;
+    DECLARE _mun_nombre VARCHAR(80);
+
+    SELECT municipioid INTO _municipio_id
+    FROM clientes
+    WHERE nombre = nombre_cliente
+    LIMIT 1;
+
+    SELECT nombre INTO _mun_nombre
+    FROM municipio 
+    WHERE id = _municipio_id
+    LIMIT 1;
+
+    RETURN _mun_nombre;
+
+END //
+
+DELIMITER ;
+
+SELECT fn_municipio_por_nombre_cliente('Valentina Mendoza');
+
+
