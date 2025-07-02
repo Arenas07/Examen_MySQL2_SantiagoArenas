@@ -1,3 +1,5 @@
+USE examen_mysql;
+
 INSERT INTO pais (nombre) VALUES
 ('Colombia'),
 ('México'),
@@ -11,7 +13,7 @@ INSERT INTO pais (nombre) VALUES
 ('Paraguay');
 
 
-INSERT INTO departamento (nombre, paisid) VALUES
+INSERT INTO departamento (id, nombre, paisid) VALUES
 (1, 'Antioquia', 1),
 (2, 'Cundinamarca', 1),
 (3, 'Valle del Cauca', 1),
@@ -1061,7 +1063,7 @@ INSERT INTO pedidos (cliente_id, empleado_id, fecha_pedido, estado) VALUES (100,
 INSERT INTO pedidos (cliente_id, empleado_id, fecha_pedido, estado) VALUES (100, 44, '2023-10-03', 'Enviado');
 INSERT INTO pedidos (cliente_id, empleado_id, fecha_pedido, estado) VALUES (100, 14, '2023-05-11', 'Cancelado');
 
-INSERT INTO productosuc (productoid, sucursalid) VALUES
+INSERT INTO producto_suc (productoid, sucursalid) VALUES
 (11, 1),
 (42, 1),
 (45, 1),
