@@ -41,3 +41,12 @@ INNER JOIN sucursal suc ON suc.id = e.sucursalid
 INNER JOIN municipio mun ON mun.id = suc.municipioid
 INNER JOIN departamento dep ON dep.id = mun.depid
 GROUP BY dep.nombre, mun.nombre;
+
+-- Mostrar todos los municipios con sucursales activas (que tengan al menos un empleado).
+
+SELECT mun.nombre
+FROM municipio mun
+INNER JOIN sucursal suc ON mun.id = suc.municipioid 
+INNER JOIN empleados e ON  suc.id = e.sucursalid
+GROUP BY mun.nombre
+HAVING COUNT(e.empleado_id) >= 1;
