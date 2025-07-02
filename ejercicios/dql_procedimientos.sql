@@ -93,3 +93,25 @@ END //
 DELIMITER ;
 
 CALL ps_buscar_cliente_por_email('adrian.ruiz@gmail.com');
+
+
+-- Cree un procedimiento por nombre `ps_clientes_registrados_rango` donde muestre los clientes registrados entre dos fechas.
+
+
+DELIMITER //
+
+DROP PROCEDURE IF EXISTS ps_clientes_registrados_rango;
+CREATE PROCEDURE ps_clientes_registrados_rango(
+    IN p_inicio DATE,
+    IN p_final DATE
+)
+BEGIN 
+    SELECT *
+    FROM clientes
+    WHERE fecha_registro BETWEEN p_inicio AND p_final;
+
+END //
+
+DELIMITER ;
+
+CALL ps_clientes_registrados_rango('2023-01-01', '2023-12-31');
