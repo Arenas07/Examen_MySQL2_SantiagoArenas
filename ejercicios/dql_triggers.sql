@@ -37,7 +37,7 @@ BEGIN
     SELECT COUNT(suc.id) INTO _total
     FROM empresa e
     INNER JOIN sucursal suc ON e.id = suc.empresaid
-    WHERE id = OLD.id;
+    WHERE id = NEW.id;
 
     IF _total >= 1 THEN 
         SIGNAL SQLSTATE '45000'
@@ -68,6 +68,23 @@ BEGIN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Correo en uso';
     END IF;
+END //
+
+DELIMITER ;
+
+-- Define un trigger llamado `trg_normalizar_nombre_empleado` que antes  de insertar en empleados, convierte el nombre a mayúsculas.
+
+DELIMITER //
+
+DROP TRIGGER IF EXISTS trg_normalizar_nombre_empleado;
+CREATE TRIGGER trg_normalizar_nombre_empleado
+BEFORE INSERT ON empleados
+FOR EACH ROW
+BEGIN 
+    UPDATE empleados
+    SET nombre = UPPER(NEW.nombre)
+    WHERE empleado_id = NEW.empleado_id; 
+
 END //
 
 DELIMITER ;
