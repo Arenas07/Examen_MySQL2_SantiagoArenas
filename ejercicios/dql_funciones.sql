@@ -53,3 +53,27 @@ END //
 DELIMITER ;
 
 SELECT fn_nombre_municipio(1);
+
+
+-- Crea una función llamada `fn_salario_promedio_sucursal(sucursal_id INT)` que retorne el promedio salarial de los empleados de la sucursal.
+
+DELIMITER //
+
+DROP FUNCTION IF EXISTS fn_salario_promedio_sucursal;
+CREATE FUNCTION fn_salario_promedio_sucursal(sucursal_id INT)
+RETURNS DECIMAL(10,2)
+DETERMINISTIC
+BEGIN
+    DECLARE _promedio DECIMAL(10,2);
+
+    SELECT AVG(salario) INTO _promedio
+    FROM empleados
+    WHERE sucursalid = sucursal_id;
+
+    RETURN _promedio;
+END //
+
+DELIMITER ;
+
+SELECT fn_salario_promedio_sucursal(1);
+
