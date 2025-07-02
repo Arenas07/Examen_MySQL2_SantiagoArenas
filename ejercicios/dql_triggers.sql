@@ -9,9 +9,15 @@ DELIMITER //
 DROP TRIGGER IF EXISTS trg_fecha_registro_cliente_default;
 CREATE TRIGGER trg_fecha_registro_cliente_default
 BEFORE INSERT ON clientes
+FOR EACH ROW
 BEGIN
-    
+    IF NEW.fecha_registro = NULL THEN
+        UPDATE clientes
+        SET fecha_registro = CURDATE()
+        WHERE cliente_id = NEW.cliente_id;
+    END IF;
 
 END //
 
 DELIMITER ;
+
